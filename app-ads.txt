@@ -1,2 +1,1 @@
-# Remplace pub-XXXXXXXXXXXXXXXX par ton identifiant d'éditeur AdMob (AdMob > Paramètres > Informations sur le compte)
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-1659840638539443, DIRECT, f08c47fec0942fa0
