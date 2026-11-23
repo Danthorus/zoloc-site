@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZOLOC – Ta colocation d'animaux</title>
+<meta name="description" content="ZOLOC, le jeu mobile où tu construis une colocation pour des dizaines d'animaux : chambres, salles communes, bébés à la nurserie. Bientôt sur Android et iPhone.">
+<meta property="og:title" content="ZOLOC – Ta colocation d'animaux">
+<meta property="og:description" content="Construis la coloc la plus mignonne du monde. Bientôt sur Android et iPhone.">
+<meta property="og:image" content="https://zoloc.domaineduvalpendragon.fr/img/chien.webp">
+<link rel="icon" href="img/icone.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+<header class="haut">
+  <a class="marque" href="/"><img src="img/icone.svg" alt="" width="44" height="44">ZOLOC</a>
+  <nav><a href="#jeu">Le jeu</a><a href="#liste">Être prévenu</a></nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-texte">
+      <p class="badge">Bientôt sur Android et iPhone</p>
+      <h1>Ta colocation<br>d'animaux</h1>
+      <p class="intro">Construis des chambres, accueille des dizaines de colocataires, réponds à leurs envies et regarde ta coloc grandir. Un jeu doux, sans pub imposée.</p>
+      <a class="bouton" href="#liste">Prévenez-moi à la sortie</a>
+    </div>
+    <div class="hero-animaux" aria-hidden="true">
+      <img src="img/chien.webp" alt="" class="a1">
+      <img src="img/chat.webp" alt="" class="a2">
+      <img src="img/panda.webp" alt="" class="a3">
+    </div>
+  </section>
+
+  <section id="jeu" class="cartes">
+    <article>
+      <img src="img/renard.webp" alt="Un renard colocataire">
+      <h2>Plus de 50 animaux</h2>
+      <p>Chien, renard, panda, girafe, baleine… chacun a sa chambre, son caractère et ses salles préférées.</p>
+    </article>
+    <article>
+      <img src="img/koala.webp" alt="Un koala colocataire">
+      <h2>Une coloc vivante</h2>
+      <p>Tes colocataires se promènent, demandent un bain ou une partie de jeu, et rapportent des zolocs.</p>
+    </article>
+    <article>
+      <img src="img/chat.webp" alt="Un chat colocataire">
+      <h2>Des bébés à la nurserie</h2>
+      <p>Deux chambres du même animal ? Un bébé naît, grandit, puis emménage dans une chambre offerte.</p>
+    </article>
+  </section>
+
+  <section id="liste" class="liste">
+    <h2>Sois prévenu le jour de la sortie</h2>
+    <p>Un seul e-mail à la sortie, puis les grandes nouveautés. Désinscription en un clic.</p>
+    <form id="form-liste" novalidate>
+      <label class="cache" for="email">Adresse e-mail</label>
+      <input id="email" name="email" type="email" autocomplete="email" placeholder="ton@email.fr" required>
+      <input class="cache" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="bouton" type="submit">M'inscrire</button>
+    </form>
+    <p id="message" role="status"></p>
+    <p class="petit">En t'inscrivant, tu acceptes de recevoir ces e-mails. Voir la <a href="confidentialite.html">politique de confidentialité</a>.</p>
+  </section>
+</main>
+
+<footer>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="mentions-legales.html">Mentions légales</a>
+  <a href="mailto:contactzoloc@domaineduvalpendragon.fr">contactzoloc@domaineduvalpendragon.fr</a>
+</footer>
+
+<script>
+// Liste d'attente : envoyée à la fonction Supabase « liste-attente » (supabase/functions/liste-attente)
+const FONCTION = "https://VOTRE_PROJET.supabase.co/functions/v1/liste-attente";
+const form = document.getElementById("form-liste");
+const msg = document.getElementById("message");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = form.email.value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.textContent = "Cette adresse e-mail ne semble pas valide.";
+    return;
+  }
+  const bouton = form.querySelector("button");
+  bouton.disabled = true;
+  msg.textContent = "Inscription…";
+  try {
+    const r = await fetch(FONCTION, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, site: form.site.value, langue: navigator.language || "fr"}),
+    });
+    msg.textContent = r.ok ? "C'est noté ! Vérifie ta boîte mail." : "Oups, réessaie dans un instant.";
+    if (r.ok) form.reset();
+  } catch {
+    msg.textContent = "Oups, réessaie dans un instant.";
+  }
+  bouton.disabled = false;
+});
+</script>
+</body>
+</html>
