@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invitation – ZOLOC</title>
+<link rel="icon" href="img/icone.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+<header class="haut">
+  <a class="marque" href="/"><img src="img/icone.svg" alt="" width="44" height="44">ZOLOC</a>
+</header>
+<main class="texte">
+<h1>Un ami t'invite dans sa coloc !</h1>
+<p>ZOLOC est un jeu de colocation d'animaux : construis ta coloc, accueille des colocataires adorables et compare-toi à tes amis.</p>
+<p>Son code d'invitation : <strong id="code" style="font-size:2rem;letter-spacing:.2em">······</strong></p>
+<p>Dans le jeu, ouvre <strong>Classement › Parrainage</strong> et saisis ce code : tu reçois <strong>20 globes</strong> et vous devenez amis.</p>
+<p><button id="copier" type="button">Copier le code</button></p>
+<p><a href="/">Découvrir ZOLOC et être prévenu de la sortie</a></p>
+</main>
+<footer>
+  <a href="/">Accueil</a>
+  <a href="confidentialite.html">Confidentialité</a>
+  <a href="conditions.html">Conditions</a>
+  <a href="mentions-legales.html">Mentions légales</a>
+</footer>
+<script>
+(function () {
+  var code = (new URLSearchParams(location.search).get("code") || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+  var el = document.getElementById("code");
+  if (code) { el.textContent = code; } else { document.getElementById("copier").hidden = true; }
+  document.getElementById("copier").addEventListener("click", function () {
+    if (navigator.clipboard) { navigator.clipboard.writeText(code); this.textContent = "Code copié !"; }
+  });
+})();
+</script>
+</body>
+</html>
